@@ -1,0 +1,70 @@
+body {
+    background-color: #111111;
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+}
+
+.side {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    background-color: black;
+    width: 17%;
+    height: 900px;
+    filter: drop-shadow(0 0 5px #004cff);
+    padding: 0px 15px 0px 15px;
+}
+
+.logo {
+    width: 180px;
+    height: 70px;
+}
+
+.logo img:hover {
+    filter: drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 1px #ffffff)
+        drop-shadow(0 0 5px #00bfff) drop-shadow(0 0 10px #006eff)
+        drop-shadow(0 0 10px #004cff);
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.profile {
+    background-color: #111111;
+    border-radius: 5px;
+}
+
+.interactions {
+    height: 500px;
+    text-decoration: none;
+    color: white;
+    font-size: 19px;
+}
+
+.interaction{
+    padding: 10px;
+}
+
+.exit {
+    display: flex;
+    flex-direction: column;
+    font-size: 19px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    padding: 5px;
+}
+
+a:hover {
+    filter: drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 1px #00bfff)
+        drop-shadow(0 0 5px #004cff);
+}
+
+i {
+    padding: 10px;
+}

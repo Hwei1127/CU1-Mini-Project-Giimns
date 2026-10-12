@@ -1,0 +1,151 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background-image:
+        linear-gradient(90deg, rgba(0, 5, 20, 0.05), rgba(0, 5, 20, 0.35)),
+        url("Assets/Images/sign_bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.card {
+    min-height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 8%;
+}
+
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+.auth-card {
+    width: 300px;
+    height: 550px;
+    padding: 40px;
+    background: rgba(2, 12, 35, 0.72);
+    border: 1px solid rgba(100, 190, 255, 0.7);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    box-shadow:
+        0 0 20px rgba(50, 150, 255, 0.3),
+        0 0 50px rgba(20, 100, 255, 0.15),
+        inset 0 0 25px rgba(80, 180, 255, 0.05);
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 30px 0;
+    font-size: 42px;
+    letter-spacing: 5px;
+    color: white;
+    text-shadow:
+        0 0 5px white,
+        0 0 15px #55baff,
+        0 0 30px #168cff;
+}
+
+.error-msg {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ff5f8f;
+    border-radius: 8px;
+    background: rgba(255, 50, 100, 0.1);
+    color: #ff9bb8;
+    text-align: center;
+}
+
+.form-group label {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #c9eaff;
+    padding-top: 10px;
+}
+
+input {
+    width: 90%;
+    padding: 13px 15px;
+    font-size: 15px;
+    color: white;
+    background: rgba(0, 10, 30, 0.7);
+    border: 1px solid rgba(100, 180, 255, 0.5);
+    border-radius: 8px;
+    outline: none;
+}
+
+input::placeholder {
+    color: #7089a3;
+}
+
+input:focus {
+    border-color: #72c8ff;
+    box-shadow:
+        0 0 8px rgba(70, 180, 255, 0.5),
+        0 0 20px rgba(30, 130, 255, 0.2);
+}
+
+button.btn-auth {
+    width: 100%;
+    margin-top: 30px;
+    padding: 13px;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    background: linear-gradient(90deg, #1264ad, #3baeff, #1264ad);
+    border: 1px solid #8bd8ff;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(60, 180, 255, 0.5);
+    transition: 0.3s;
+}
+
+button.btn-auth:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 20px rgba(70, 190, 255, 0.8),
+        0 0 40px rgba(30, 130, 255, 0.3);
+}
+
+.auth-switch {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 14px;
+    color: #8ca6bd;
+}
+
+.auth-switch a {
+    color: #70c5ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-switch a:hover {
+    color: white;
+    text-shadow: 0 0 8px #5bbcff;
+}
+
+@media (max-width: 800px) {
+    .card {
+        justify-content: center;
+        padding: 20px;
+    }
+    .auth-card {
+        width: 100%;
+        max-width: 380px;
+    }
+}
