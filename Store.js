@@ -1,11 +1,10 @@
-/* Search box and genre buttons (used on Store.php).
-   Both feed into one filter that hides the games that do not match. */
+// Search
 let activeGenre = "";
 
 function applyFilters() {
-    const input = document.getElementById("myInput");
+    const input = document.getElementById("searchInput");
     const filter = input.value.trim().toLowerCase();
-    const tiles = document.querySelectorAll("#myUL .game-tile");
+    const tiles = document.querySelectorAll("#gameGrid .game-tile");
     let visible = 0;
 
     tiles.forEach(function (tile) {
@@ -25,11 +24,6 @@ function applyFilters() {
     document.getElementById("noResults").hidden = visible !== 0;
 }
 
-// Kept under the old name so onkeyup="myFunction()" in Store.php still works
-function myFunction() {
-    applyFilters();
-}
-
 document.querySelectorAll("#genreFilter .chip").forEach(function (chip) {
     chip.addEventListener("click", function () {
         document.querySelectorAll("#genreFilter .chip").forEach(function (other) {
@@ -41,8 +35,7 @@ document.querySelectorAll("#genreFilter .chip").forEach(function (chip) {
     });
 });
 
-/* After a review or the wishlist is saved, Store.php?open=ID loads again.
-   Open the card of that game so the message is visible. */
+// Popover
 const openId = new URLSearchParams(window.location.search).get("open");
 
 if (openId) {

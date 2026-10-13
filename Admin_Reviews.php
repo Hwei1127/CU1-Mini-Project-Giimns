@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $reviews = $pdo->query(
-    'SELECT r.id, r.rating, r.comment, r.created_at, u.name AS user_name, g.name AS game_name
-       FROM reviews r
-       JOIN users u ON u.id = r.user_id
-       JOIN games g ON g.id = r.game_id
-      ORDER BY r.created_at DESC, r.id DESC'
+    'SELECT reviews.id, reviews.rating, reviews.comment, reviews.created_at, users.name AS user_name, games.name AS game_name
+       FROM reviews
+       JOIN users ON users.id = reviews.user_id
+       JOIN games ON games.id = reviews.game_id
+      ORDER BY reviews.created_at DESC, reviews.id DESC'
 )->fetchAll();
 ?>
 

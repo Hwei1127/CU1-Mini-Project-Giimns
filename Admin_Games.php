@@ -24,14 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $games = $pdo->query(
-    "SELECT g.id, g.name, g.price, g.image,
-            (SELECT GROUP_CONCAT(DISTINCT ge.genre ORDER BY ge.genre SEPARATOR ', ')
-               FROM game_genres gg JOIN genres ge ON ge.id = gg.genre_id
-              WHERE gg.game_id = g.id) AS genres,
-            (SELECT ROUND(AVG(r.rating), 1) FROM reviews r WHERE r.game_id = g.id) AS avg_rating,
-            (SELECT COUNT(*) FROM reviews r2 WHERE r2.game_id = g.id) AS review_count
-       FROM games g
-      ORDER BY g.name"
+    "SELECT games.id, games.name, games.price, games.image,
+            (SELECT GROUP_CONCAT(DISTINCT genres.genre ORDER BY genres.genre SEPARATOR ', ')
+               FROM game_genres JOIN genres ON genres.id = game_genres.genre_id
+              WHERE game_genres.game_id = games.id) AS genres,
+            (SELECT ROUND(AVG(reviews.rating), 1) FROM reviews WHERE reviews.game_id = games.id) AS average_rating,
+            (SELECT COUNT(*) FROM reviews WHERE reviews.game_id = games.id) AS review_count
+       FROM games
+      ORDER BY games.name"
 )->fetchAll();
 ?>
 
@@ -165,7 +165,7 @@ $games = $pdo->query(
                         <td><?= htmlspecialchars($game['genres'] ?? '') ?></td>
                         <td><?= (float) $game['price'] > 0 ? '$' . number_format((float) $game['price'], 2) : 'Free' ?></td>
                         <td class="rating">
-                            <?= (int) $game['review_count'] ? htmlspecialchars($game['avg_rating']) . ' (' . (int) $game['review_count'] . ')' : '&ndash;' ?>
+                            <?= (int) $game['review_count'] ? htmlspecialchars($game['average_rating']) . ' (' . (int) $game['review_count'] . ')' : '&ndash;' ?>
                         </td>
                         <td>
                             <div class="actions">

@@ -173,7 +173,7 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
                 </button>
                 <?php endforeach; ?>
             </div>
-
+            <h2 class="section-title">All Games <small>(<span id="gameCount"><?= count($games) ?></span>)</small></h2>
             <ul id="myUL" class="store-grid">
                 <?php foreach ($games as $game): ?>
                 <?php
@@ -297,7 +297,7 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
                                         <p class="no-comments">No reviews yet. Be the first to review this game.</p>
                                         <?php endif; ?>
                                         <?php foreach ($gameReviews as $review): ?>
-                                        <?php $isMine = ((int) $review['user_id'] === $userId); ?>
+                                        <?php $isMine = ((int) $review['user_id'] === $userId);?>
                                         <div class="comment-item">
                                             <div class="who">
                                                 <strong>
@@ -327,6 +327,7 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
                                             <?php if (trim((string) $review['comment']) !== ''): ?>
                                             <p><?= nl2br(htmlspecialchars($review['comment'])) ?></p>
                                             <?php endif; ?>
+                                                                                                                                            <hr>
                                         </div>
                                         <?php endforeach; ?>
                                     </div>

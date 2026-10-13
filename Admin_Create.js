@@ -1,5 +1,4 @@
-/* Drag and drop image upload with a live preview (used on Admin_Create.php).
-   Works for every .drop-area on the page: one for the cover, one for the banner. */
+// Drag, Drop
 document.querySelectorAll(".drop-area").forEach(function (dropArea) {
     const inputFile = dropArea.querySelector("input[type=file]");
     const imageView = dropArea.querySelector(".img-view");
@@ -16,16 +15,16 @@ document.querySelectorAll(".drop-area").forEach(function (dropArea) {
             return;
         }
 
-        const imgLink = URL.createObjectURL(file);
-        imageView.style.backgroundImage = `url(${imgLink})`;
+        const imageLink = URL.createObjectURL(file);
+        imageView.style.backgroundImage = `url(${imageLink})`;
         imageView.textContent = "";
         imageView.classList.add("has-image");
     }
 
     inputFile.addEventListener("change", uploadImage);
 
-    dropArea.addEventListener("dragover", function (e) {
-        e.preventDefault();
+    dropArea.addEventListener("dragover", function (event) {
+        event.preventDefault();
         dropArea.classList.add("dragging");
     });
 
@@ -33,10 +32,10 @@ document.querySelectorAll(".drop-area").forEach(function (dropArea) {
         dropArea.classList.remove("dragging");
     });
 
-    dropArea.addEventListener("drop", function (e) {
-        e.preventDefault();
+    dropArea.addEventListener("drop", function (event) {
+        event.preventDefault();
         dropArea.classList.remove("dragging");
-        inputFile.files = e.dataTransfer.files;
+        inputFile.files = event.dataTransfer.files;
         uploadImage();
     });
 });

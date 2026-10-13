@@ -84,50 +84,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Games on this user's wishlist, newest first
 $query = $pdo->prepare('
-    SELECT g.id, g.name, g.image, g.banner, g.price
-    FROM wishlist w
-    JOIN games g ON g.id = w.game_id
-    WHERE w.user_id = ?
-    ORDER BY w.added_at DESC, w.id DESC
+    SELECT games.id, games.name, games.image, games.banner, games.price
+    FROM wishlist
+    JOIN games ON games.id = wishlist.game_id
+    WHERE wishlist.user_id = ?
+    ORDER BY wishlist.added_at DESC, wishlist.id DESC
 ');
 $query->execute([$userId]);
 $wishlist = $query->fetchAll();
 
 // Games this user has reviewed, newest first
 $query = $pdo->prepare('
-    SELECT g.id, g.name, g.image, g.banner, r.rating, r.comment, r.created_at
-    FROM reviews r
-    JOIN games g ON g.id = r.game_id
-    WHERE r.user_id = ?
-    ORDER BY r.created_at DESC, r.id DESC
+    SELECT games.id, games.name, games.image, games.banner, reviews.rating, reviews.comment, reviews.created_at
+    FROM reviews
+    JOIN games ON games.id = reviews.game_id
+    WHERE reviews.user_id = ?
+    ORDER BY reviews.created_at DESC, reviews.id DESC
 ');
 $query->execute([$userId]);
 $reviewed = $query->fetchAll();
 
 // Every game on this page gets one popover card (wishlist and reviewed together)
 $query = $pdo->prepare("
-    SELECT g.id, g.name, g.image, g.banner, g.link, g.description, g.price,
-           GROUP_CONCAT(DISTINCT ge.genre ORDER BY ge.genre SEPARATOR ',') AS genres,
-           (SELECT ROUND(AVG(r.rating), 1) FROM reviews r WHERE r.game_id = g.id) AS avg_rating,
-           (SELECT COUNT(*) FROM wishlist w WHERE w.game_id = g.id AND w.user_id = :uid) AS wished
-    FROM games g
-    LEFT JOIN game_genres gg ON gg.game_id = g.id
-    LEFT JOIN genres ge ON ge.id = gg.genre_id
-    WHERE g.id IN (SELECT game_id FROM wishlist WHERE user_id = :uid2)
-       OR g.id IN (SELECT game_id FROM reviews WHERE user_id = :uid3)
-    GROUP BY g.id
-    ORDER BY g.name
+    SELECT games.id, games.name, games.image, games.banner, games.link, games.description, games.price,
+           GROUP_CONCAT(DISTINCT genres.genre ORDER BY genres.genre SEPARATOR ',') AS genres,
+           (SELECT ROUND(AVG(reviews.rating), 1) FROM reviews WHERE reviews.game_id = games.id) AS average_rating,
+           (SELECT COUNT(*) FROM wishlist WHERE wishlist.game_id = games.id AND wishlist.user_id = :userId) AS wished
+    FROM games
+    LEFT JOIN game_genres ON game_genres.game_id = games.id
+    LEFT JOIN genres ON genres.id = game_genres.genre_id
+    WHERE games.id IN (SELECT game_id FROM wishlist WHERE user_id = :wishlistUserId)
+       OR games.id IN (SELECT game_id FROM reviews WHERE user_id = :reviewUserId)
+    GROUP BY games.id
+    ORDER BY games.name
 ");
-$query->execute(['uid' => $userId, 'uid2' => $userId, 'uid3' => $userId]);
+$query->execute(['userId' => $userId, 'wishlistUserId' => $userId, 'reviewUserId' => $userId]);
 $games = $query->fetchAll();
 
 // Every review, grouped by game
 $reviewsByGame = [];
 $reviewRows = $pdo->query(
-    'SELECT r.id, r.game_id, r.user_id, r.rating, r.comment, r.created_at, u.name AS user_name
-       FROM reviews r
-       JOIN users u ON u.id = r.user_id
-      ORDER BY r.created_at DESC, r.id DESC'
+    'SELECT reviews.id, reviews.game_id, reviews.user_id, reviews.rating, reviews.comment, reviews.created_at, users.name AS user_name
+       FROM reviews
+       JOIN users ON users.id = reviews.user_id
+      ORDER BY reviews.created_at DESC, reviews.id DESC'
 )->fetchAll();
 foreach ($reviewRows as $reviewRow) {
     $reviewsByGame[$reviewRow['game_id']][] = $reviewRow;
@@ -240,7 +240,7 @@ foreach ($reviewRows as $reviewRow) {
                             <input type="hidden" name="do" value="remove" />
                             <input type="hidden" name="game_id" value="<?= (int) $game['id'] ?>" />
                             <button type="submit" class="remove">
-                                Remove
+                                <i class="bi bi-bookmark-x"></i>Remove
                             </button>
                         </form>
                     </li>
@@ -294,7 +294,7 @@ foreach ($reviewRows as $reviewRow) {
         $gameReviews = $reviewsByGame[$game['id']] ?? [];
         $isWishlisted      = (int) $game['wished'] > 0;
         $reviewCount = count($gameReviews);
-        $averagePercent  = $game['avg_rating'] !== null ? (float) $game['avg_rating'] / 5 * 100 : 0;
+        $averagePercent  = $game['average_rating'] !== null ? (float) $game['average_rating'] / 5 * 100 : 0;
 
         // This user's own review of the game (if there is one)
         $userReview = null;
@@ -374,7 +374,7 @@ foreach ($reviewRows as $reviewRow) {
                                         <span class="avg-stars" style="--fill: <?= $averagePercent ?>%">★★★★★</span>
                                         <span class="avg-text">
                                             <?php if ($reviewCount): ?>
-                                            <?= htmlspecialchars($game['avg_rating']) ?> (<?= $reviewCount ?>)
+                                            <?= htmlspecialchars($game['average_rating']) ?> (<?= $reviewCount ?>)
                                             <?php else: ?>
                                             No ratings yet
                                             <?php endif; ?>

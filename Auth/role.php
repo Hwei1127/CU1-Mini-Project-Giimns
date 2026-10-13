@@ -43,7 +43,7 @@ function requireRole(array $roles)
     }
 }
 
-function e($value): string
+function escape($value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
@@ -60,7 +60,7 @@ function csrfToken(): string
 
 function csrfField(): string
 {
-    return '<input type="hidden" name="csrf" value="' . e(csrfToken()) . '">';
+    return '<input type="hidden" name="csrf" value="' . escape(csrfToken()) . '">';
 }
 
 function csrfOk(): bool
@@ -78,9 +78,9 @@ function showFlash(): void
     if (empty($_SESSION['flash'])) {
         return;
     }
-    $f = $_SESSION['flash'];
+    $flash = $_SESSION['flash'];
     unset($_SESSION['flash']);
-    echo '<div class="gx-alert gx-alert-' . e($f['type']) . '">' . e($f['message']) . '</div>';
+    echo '<div class="gx-alert gx-alert-' . escape($flash['type']) . '">' . escape($flash['message']) . '</div>';
 }
 
 function redirectTo(string $page): void
@@ -97,19 +97,19 @@ function gameImageUrl(?string $file): string
     if ($file === '') {
         return '';
     }
-    foreach (['Assets/Images/games/', 'Assets/Images/'] as $dir) {
-        if (is_file(__DIR__ . '/../' . $dir . $file)) {
-            return $dir . rawurlencode($file);
+    foreach (['Assets/Images/games/', 'Assets/Images/'] as $folder) {
+        if (is_file(__DIR__ . '/../' . $folder . $file)) {
+            return $folder . rawurlencode($file);
         }
     }
     return '';
 }
 
-/** Saves an uploaded image into Assets/Images/games/ and returns its file name (or $old when nothing was uploaded). */
-function saveUpload(string $field, ?string $old): ?string
+/** Saves an uploaded image into Assets/Images/games/ and returns its file name (or $oldFileName when nothing was uploaded). */
+function saveUpload(string $field, ?string $oldFileName): ?string
 {
     if (empty($_FILES[$field]) || $_FILES[$field]['error'] === UPLOAD_ERR_NO_FILE) {
-        return $old;
+        return $oldFileName;
     }
     $file = $_FILES[$field];
     if ($file['error'] !== UPLOAD_ERR_OK) {
@@ -119,16 +119,16 @@ function saveUpload(string $field, ?string $old): ?string
         throw new RuntimeException('The ' . $field . ' must be 5 MB or smaller.');
     }
     $allowed = [IMAGETYPE_JPEG => 'jpg', IMAGETYPE_PNG => 'png', IMAGETYPE_GIF => 'gif', IMAGETYPE_WEBP => 'webp'];
-    $info = @getimagesize($file['tmp_name']);
-    if (!$info || !isset($allowed[$info[2]])) {
+    $imageInfo = @getimagesize($file['tmp_name']);
+    if (!$imageInfo || !isset($allowed[$imageInfo[2]])) {
         throw new RuntimeException('The ' . $field . ' must be a JPG, PNG, GIF or WEBP image.');
     }
-    $dir = __DIR__ . '/../Assets/Images/games/';
-    if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
+    $folder = __DIR__ . '/../Assets/Images/games/';
+    if (!is_dir($folder)) {
+        mkdir($folder, 0755, true);
     }
-    $name = bin2hex(random_bytes(8)) . '.' . $allowed[$info[2]];
-    if (!move_uploaded_file($file['tmp_name'], $dir . $name)) {
+    $name = bin2hex(random_bytes(8)) . '.' . $allowed[$imageInfo[2]];
+    if (!move_uploaded_file($file['tmp_name'], $folder . $name)) {
         throw new RuntimeException('Could not save the ' . $field . ' file.');
     }
     return $name;
@@ -138,9 +138,9 @@ function saveUpload(string $field, ?string $old): ?string
 // Returns ['error' => '...'] when something is wrong, otherwise ['ok' => true]
 function deleteReview($pdo, $reviewId, $userId, $isAdmin)
 {
-    $stmt = $pdo->prepare('SELECT user_id FROM reviews WHERE id = ?');
-    $stmt->execute([$reviewId]);
-    $review = $stmt->fetch();
+    $query = $pdo->prepare('SELECT user_id FROM reviews WHERE id = ?');
+    $query->execute([$reviewId]);
+    $review = $query->fetch();
 
     if (!$review) {
         return ['error' => 'That review no longer exists.'];
@@ -149,10 +149,9 @@ function deleteReview($pdo, $reviewId, $userId, $isAdmin)
         return ['error' => 'You can only delete your own reviews.'];
     }
 
-    $stmt = $pdo->prepare('DELETE FROM reviews WHERE id = ?');
-    $stmt->execute([$reviewId]);
+    $query = $pdo->prepare('DELETE FROM reviews WHERE id = ?');
+    $query->execute([$reviewId]);
 
     return ['ok' => true];
 }
     ?>
-

@@ -51,11 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $query = $pdo->prepare(
-    'SELECT r.id, r.rating, r.comment, r.created_at, g.name
-       FROM reviews r
-       JOIN games g ON g.id = r.game_id
-      WHERE r.user_id = ?
-      ORDER BY r.created_at DESC'
+    'SELECT reviews.id, reviews.rating, reviews.comment, reviews.created_at, games.name
+       FROM reviews
+       JOIN games ON games.id = reviews.game_id
+      WHERE reviews.user_id = ?
+      ORDER BY reviews.created_at DESC'
 );
 $query->execute([$userId]);
 $reviews = $query->fetchAll();
