@@ -117,7 +117,7 @@ body {
         0 0 16px #008cff,
         0 0 30px #006eff;
 }
-/* ---------- Library ---------- */
+
 .library-wrap {
     max-width: 1200px;
     margin: 0 auto;
@@ -181,7 +181,6 @@ body {
     text-decoration: none;
 }
 
-/* 6 cards in every row: (full width - 5 gaps) / 6 */
 .library-list {
     list-style: none;
     margin: 0;
@@ -297,7 +296,6 @@ body {
     margin-right: 6px;
 }
 
-/* ---------- Popover card ---------- */
 .pop {
     padding: 0;
     border: none;
@@ -315,7 +313,6 @@ body {
     background: none;
 }
 
-/* Bootstrap also has a .card, so everything it sets is reset here */
 .pop .card {
     position: relative;
     display: flex;
@@ -339,8 +336,6 @@ body {
     display: block;
 }
 
-/* The right side is a column: title and description on top, the comments
-   in the middle (they scroll), the review form at the bottom (it stays). */
 .pop .info {
     flex: 1;
     min-width: 0;
@@ -359,7 +354,6 @@ body {
     gap: 16px;
 }
 
-/* the close button sits in the top right corner of the screen, outside the card */
 .pop .close-btn {
     position: fixed;
     top: 20px;
@@ -418,7 +412,6 @@ body {
     font-weight: 500;
 }
 
-/* the bookmark takes the place where the close button used to be */
 .pop .wishlist-form {
     position: absolute;
     top: 14px;
@@ -488,7 +481,6 @@ body {
     color: #ccc;
 }
 
-/* average rating: the stars are filled up to the average (4.3 fills 86%) */
 .pop .average {
     display: flex;
     align-items: center;
@@ -532,7 +524,6 @@ body {
     padding: 0px;
 }
 
-/* the row is reversed so ticking one star lights every star to its left */
 .pop .rating {
     display: flex;
     flex-direction: row-reverse;
@@ -568,7 +559,6 @@ body {
     color: #f5b301;
 }
 
-/* comments: this is the part that scrolls */
 .pop .comment {
     flex: 1;
     min-height: 120px;
@@ -635,7 +625,6 @@ body {
     font-size: 15px;
 }
 
-/* write a review: this part stays at the bottom */
 .pop .review {
     flex: none;
     display: flex;
@@ -680,8 +669,16 @@ body {
     background: #bdefff;
 }
 
-.pop button:focus-visible,
-.pop .click:focus-visible,
+.pop button:focus-visible.pop .rating input:focus-visible + label {
+    outline: 2px solid #bdefff;
+    outline-offset: 2px;
+}
+
+.pop .click:focus-visible.pop .rating input:focus-visible + label {
+    outline: 2px solid #bdefff;
+    outline-offset: 2px;
+}
+
 .pop .rating input:focus-visible + label {
     outline: 2px solid #bdefff;
     outline-offset: 2px;

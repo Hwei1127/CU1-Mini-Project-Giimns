@@ -139,7 +139,7 @@ label {
 }
 
 .cols > div {
-    flex: 1; /*makes an element flexible so it can grow and shrink to evenly fill all available space in a flex container. */
+    flex: 1; 
     min-width: 260px;
 }
 
