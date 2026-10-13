@@ -1,0 +1,717 @@
+body {
+    margin: 0;
+    background-color: #111111;
+    color: white;
+}
+
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: black;
+    filter: drop-shadow(0 0 5px #00bfff);
+}
+
+.link {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+.logo {
+    width: 90x;
+    height: 65px;
+}
+
+.logo a:hover {
+    filter: drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 1px #ffffff)
+        drop-shadow(0 0 5px #00bfff) drop-shadow(0 0 10px #006eff)
+        drop-shadow(0 0 10px #004cff);
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+.pages {
+    display: flex;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    font-family: "Oswald", sans-serif;
+    font-size: 20px;
+}
+
+.pages a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.pages a:hover {
+    color: #bdefff;
+    text-shadow:
+        0 0 4px #fff,
+        0 0 8px #00bfff,
+        0 0 16px #008cff,
+        0 0 30px #006eff;
+}
+
+.right_nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.right_nav .search {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    background-color: #272727;
+    border-radius: 50px;
+    width: 230px;
+    height: 40px;
+    margin-right: 20px;
+}
+
+.right_nav input {
+    border: 0 solid;
+    background-color: transparent;
+    width: 160px;
+    outline: none;
+    color: white;
+}
+
+.right_nav i {
+    margin: 0px;
+    padding: 0 0 0 15px;
+}
+
+.right_nav .signout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right_nav a {
+    text-decoration: none;
+}
+
+.right_nav i {
+    color: #fff;
+    font-size: 20px;
+    margin-right: 30px;
+}
+
+.right_nav i:hover {
+    text-shadow:
+        0 0 4px #fff,
+        0 0 8px #00bfff,
+        0 0 16px #008cff,
+        0 0 30px #006eff;
+}
+/* ---------- Library ---------- */
+.library-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+}
+
+.library-wrap h1 {
+    margin: 0px 0px 10px 0px;
+}
+
+.library-wrap .message {
+    margin: 10px 0px 10px 0px;
+}
+
+.success-msg {
+    padding: 1px;
+    margin: 10px 0px 10px 0px;
+    border: 1px solid #6aff5f;
+    border-radius: 20px;
+    background: rgba(50, 255, 115, 0.1);
+    color: #9bff9d;
+    text-align: center;
+}
+
+.error-msg {
+    padding: 1px;
+    margin: 10px 0px 10px 0px;
+    border: 1px solid #ff5f5f;
+    border-radius: 20px;
+    background: rgba(255, 50, 50, 0.1);
+    color: #ff9b9b;
+    text-align: center;
+}
+
+.library-section {
+    margin-bottom: 50px;
+}
+
+.library-section h2 {
+    margin: 0px 0px 20px 0px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #272727;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.library-section h2 small {
+    color: #8fa3b3;
+    font-size: 16px;
+    font-weight: normal;
+    margin-left: 8px;
+}
+
+.empty {
+    color: #99aabb;
+    font-size: 18px;
+}
+
+.empty a {
+    color: #00bfff;
+    text-decoration: none;
+}
+
+/* 6 cards in every row: (full width - 5 gaps) / 6 */
+.library-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.library-card {
+    width: calc((100% - 100px) / 6);
+}
+
+.library-card .cover {
+    display: block;
+    width: 100%;
+    padding: 0;
+    cursor: pointer;
+    aspect-ratio: 3 / 4;
+    border: none;
+    overflow: hidden;
+    background: #1b1b1b;
+}
+
+.library-card .cover:hover {
+    border-color: #00bfff;
+    box-shadow: 0 0 14px rgba(0, 191, 255, 0.45);
+    outline: none;
+}
+
+.library-card .cover:focus-visible {
+    border-color: #00bfff;
+    box-shadow: 0 0 14px rgba(0, 191, 255, 0.45);
+    outline: none;
+}
+
+.library-card .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cover-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    font-size: 40px;
+}
+
+.cover-empty i {
+    margin: 0;
+    padding: 0;
+}
+
+.library-card .name {
+    margin: 10px 0px 2px 0px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.library-card .price {
+    margin: 0px 0px 8px 0px;
+    color: #8fa3b3;
+    font-size: 15px;
+}
+
+.library-card .stars {
+    margin: 0px;
+    color: #f5b301;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.library-card .review-text {
+    margin: 4px 0px 0px 0px;
+    color: #bbb;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow-wrap: anywhere;
+}
+
+.library-card .date {
+    margin: 4px 0px 0px 0px;
+    color: #8fa3b3;
+    font-size: 13px;
+}
+
+.library-card .remove {
+    padding: 5px 14px;
+    border: 0;
+    border-radius: 50px;
+    background: rgb(91, 0, 0);
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.library-card .remove:hover {
+    background: rgb(55, 0, 0);
+}
+
+.library-card .remove i {
+    margin-right: 6px;
+}
+
+/* ---------- Popover card ---------- */
+.pop {
+    padding: 0;
+    border: none;
+    border-radius: 14px;
+    background: #1b1b1b;
+    color: #fff;
+    width: 90%;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 191, 255, 0.45);
+    font-family: "Oswald", sans-serif;
+}
+
+.pop::backdrop {
+    background: none;
+}
+
+/* Bootstrap also has a .card, so everything it sets is reset here */
+.pop .card {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: min(640px, 90vh);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+}
+
+.pop .image {
+    width: 70%;
+    background: #0c0c0c;
+}
+
+.pop .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* The right side is a column: title and description on top, the comments
+   in the middle (they scroll), the review form at the bottom (it stays). */
+.pop .info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.pop .about {
+    flex: 1;
+    min-height: 0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* the close button sits in the top right corner of the screen, outside the card */
+.pop .close-btn {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: none;
+    color: #fff;
+    font-size: 18px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.pop .close-btn:hover {
+    color: #262626;
+}
+
+.pop .message {
+    margin: 0px 56px 0px 0px;
+}
+
+.pop .success-msg {
+    padding: 1px;
+    border: 1px solid #6aff5f;
+    border-radius: 20px;
+    background: rgba(50, 255, 115, 0.1);
+    color: #9bff9d;
+    text-align: center;
+}
+
+.pop .error-msg {
+    padding: 1px;
+    border: 1px solid #ff5f5f;
+    border-radius: 20px;
+    background: rgba(255, 50, 50, 0.1);
+    color: #ff9b9b;
+    text-align: center;
+}
+
+.pop .title {
+    flex: none;
+    padding-right: 56px;
+}
+
+.pop .section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pop h2 {
+    margin: 0px;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+/* the bookmark takes the place where the close button used to be */
+.pop .wishlist-form {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    margin: 0px;
+}
+
+.pop .wishlist {
+    width: 44px;
+    height: 44px;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    background: none;
+}
+
+.pop .wishlist.on {
+    color: #f5b301;
+}
+
+.pop .genre {
+    margin: 4px 0px 0px 0px;
+    color: #bdefff;
+    font-size: 15px;
+}
+
+.pop .meta {
+    margin: 2px 0px 0px 0px;
+    color: #8fa3b3;
+    font-size: 15px;
+}
+
+.pop .meta .bi-star-fill {
+    color: #ffc107;
+}
+
+.pop .description {
+    flex: none;
+}
+
+.pop .desc {
+    margin: 0px;
+    max-height: 120px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    color: #bbb;
+    font-family: system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.pop .interaction {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 14px;
+}
+
+.pop .rating-form h4 {
+    margin: 0px 0px 2px 0px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #ccc;
+}
+
+/* average rating: the stars are filled up to the average (4.3 fills 86%) */
+.pop .average {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pop .avg-stars {
+    font-size: 26px;
+    line-height: 1.1;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #f5b301 var(--fill), #666 var(--fill));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.pop .avg-text {
+    color: #ccc;
+    font-size: 15px;
+}
+
+.pop .click {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 22px;
+    border-radius: 50px;
+    background: #00bfff;
+    color: #000;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.pop .click:hover {
+    background: #bdefff;
+    color: #000;
+}
+
+.pop .click i {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* the row is reversed so ticking one star lights every star to its left */
+.pop .rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    margin: 0px;
+    padding: 0px;
+    border: 0;
+    min-width: 0;
+}
+
+.pop .rating input[type="radio"] {
+    display: none;
+}
+
+.pop .rating label {
+    margin: 0px;
+    font-size: 26px;
+    line-height: 1.1;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.pop .rating input[type="radio"]:checked ~ label {
+    color: #f5b301;
+}
+
+.pop .rating label:hover {
+    color: #f5b301;
+}
+
+.pop .rating label:hover ~ label {
+    color: #f5b301;
+}
+
+/* comments: this is the part that scrolls */
+.pop .comment {
+    flex: 1;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    padding: 14px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    scrollbar-width: thin;
+}
+
+.pop .comment-item .who {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+}
+
+.pop .comment-item strong {
+    font-weight: 500;
+}
+
+.pop .comment-item small {
+    color: #8fa3b3;
+    font-weight: normal;
+}
+
+.pop .stars-ro {
+    color: #f5b301;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.pop .comment-item p {
+    margin: 2px 0px 0px 0px;
+    color: #ccc;
+    font-family: system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.pop .del {
+    margin: 0px 0px 0px auto;
+}
+
+.pop .del button {
+    border: 0;
+    background: none;
+    color: #ff7a7a;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.pop .del button:hover {
+    color: #ff4d4d;
+}
+
+.pop .no-comments {
+    margin: 0px;
+    color: #8fa3b3;
+    font-size: 15px;
+}
+
+/* write a review: this part stays at the bottom */
+.pop .review {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pop .add-comment {
+    display: flex;
+    gap: 8px;
+}
+
+.pop .add-comment input {
+    flex: 1;
+    min-width: 0;
+    padding: 9px 16px;
+    border: 1px solid #333;
+    border-radius: 50px;
+    background: #111;
+    color: #fff;
+    font-family: system-ui, sans-serif;
+    font-size: 15px;
+}
+
+.pop .add-comment input:focus {
+    outline: none;
+    border-color: #00bfff;
+}
+
+.pop .btn-submit {
+    padding: 9px 22px;
+    border: 0;
+    border-radius: 50px;
+    background: #00bfff;
+    color: #000;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.pop .btn-submit:hover {
+    background: #bdefff;
+}
+
+.pop button:focus-visible,
+.pop .click:focus-visible,
+.pop .rating input:focus-visible + label {
+    outline: 2px solid #bdefff;
+    outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+    .link {
+        gap: 15px;
+    }
+    .library-list {
+        gap: 14px;
+    }
+    .library-card {
+        width: calc((100% - 28px) / 3);
+    }
+    .pop .card {
+        flex-direction: column;
+        height: auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    .pop .image {
+        width: 100%;
+        height: 170px;
+    }
+    .pop .info {
+        overflow: visible;
+    }
+    .pop .comment {
+        flex: none;
+        max-height: 220px;
+    }
+}

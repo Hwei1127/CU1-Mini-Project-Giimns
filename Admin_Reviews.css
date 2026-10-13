@@ -156,8 +156,12 @@ i {
     padding: 6px 14px;
 }
 
-.btn.delete {
+.delete {
     background-color: rgb(91, 0, 0);
+}
+
+.delete:hover {
+    background-color: rgb(55, 0, 0);
 }
 
 .btn.delete i {

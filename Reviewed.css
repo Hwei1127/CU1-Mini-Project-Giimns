@@ -16,6 +16,21 @@ body {
     padding: 0px 15px 0px 15px;
 }
 
+.main-content {
+    width: 80%;
+    margin-left: 20%;
+    padding: 30px 20px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    min-height: 900px;
+    color: white;
+    font-family: "Oswald", sans-serif;
+}
+
+.main-content h1 {
+    margin-bottom: 10px;
+}
+
 .logo {
     width: 180px;
     height: 70px;
@@ -43,7 +58,7 @@ body {
     padding: 10px;
 }
 
-.reviews{
+.reviews {
     background-color: #111111;
     border-radius: 5px;
 }
@@ -68,3 +83,143 @@ a:hover {
 i {
     padding: 10px;
 }
+
+.message {
+    margin: 10px 0px 10px 0px;
+
+}
+
+.success-msg {
+    padding: 1px;
+    margin: 10px 0px 10px 0px;
+    border: 1px solid #6aff5f;
+    border-radius: 20px;
+    background: rgba(50, 255, 115, 0.1);
+    color: #9bff9d;
+    text-align: center;
+    width: 92%;
+}
+
+.error-msg {
+    padding: 1px;
+    margin: 10px 0px 10px 0px;
+    border: 1px solid #ff5f5f;
+    border-radius: 20px;
+    background: rgba(255, 50, 50, 0.1);
+    color: #ff9b9b;
+    text-align: center;
+    width: 92%;
+}
+
+.empty {
+    color: #99aabb;
+    font-size: 18px;
+}
+
+.empty a {
+    color: #00bfff;
+    padding: 0px;
+}
+
+.settings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 92%;
+    justify-content: center;
+}
+
+.settings .panel {
+    padding: 20px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.settings .review {
+    width: 45%;
+    min-width: 280px;
+}
+
+.settings h3 {
+    margin-top: 0px;
+}
+
+.settings h3 small {
+    color: #8fa3b3;
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 8px;
+}
+
+.settings label {
+    display: block;
+    margin: 12px 0 4px;
+}
+
+.button{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    color: white;
+    padding-top: 10px;
+}
+
+.submit{
+    background-color: #00bfff;
+}
+
+.submit:hover {
+    color: white;
+    background-color: #13a3d3;
+}
+
+.delete {
+    background-color: rgb(91, 0, 0);
+}
+
+.delete:hover {
+    background-color: rgb(55, 0, 0);
+}
+
+
+/* the row is reversed so ticking one star lights every star to its left */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+}
+
+.rating input[type="radio"] {
+    display: none;
+}
+
+.settings .rating label {
+    margin: 0px;
+    font-size: 25px;
+    color: #cccccc;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.rating input[type="radio"]:checked ~ label,
+.settings .rating label:hover,
+.settings .rating label:hover ~ label {
+    color: #f5b301;
+}
+
+.rating input[type="radio"]:checked + label:hover,
+.rating input[type="radio"]:checked ~ label:hover,
+.settings .rating label:hover ~ input[type="radio"]:checked ~ label,
+.rating input[type="radio"]:checked ~ label:hover ~ label {
+    color: #ffcc00;
+}
+
+.btn {
+    display: flex;
+    flex-direction: row;
+    color: white;
+}
+

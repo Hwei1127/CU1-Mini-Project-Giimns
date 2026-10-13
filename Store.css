@@ -117,12 +117,533 @@ body{
         0 0 30px #006eff;
 }
 
-.banner{
-    width: 100%;
-    height: 500px;
+/* ---------- Banner ---------- */
+.banner {
+    background-image: url(./Assets/Images/banner_long.png);
+    background-size: cover;
+    background-position: center;
+    height: 350px;
 }
 
-.banner img{
+/* ---------- Store ---------- */
+.store-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+}
+
+.genre-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.chip {
+    background: #272727;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.chip:hover {
+    border-color: #00bfff;
+}
+
+.chip.active {
+    background: #00bfff;
+    color: #000;
+}
+
+.chip:focus-visible {
+    outline: 2px solid #bdefff;
+    outline-offset: 2px;
+}
+
+/* ---------- Image grid (the store itself) ---------- */
+.store-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* 6 cards in every row: (full width - 5 gaps) / 6 */
+.game-tile {
+    width: calc((100% - 100px) / 6);
+}
+
+.open-btn {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    padding: 0;
+    border: none;
+    overflow: hidden;
+    background: #1b1b1b;
+    cursor: pointer;
+}
+
+.open-btn:hover,
+.open-btn:focus-visible {
+    border-color: #00bfff;
+    box-shadow: 0 0 14px rgba(0, 191, 255, 0.45);
+    outline: none;
+}
+
+.open-btn img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.tile-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    font-size: 40px;
+}
+
+.tile-empty i {
+    margin: 0;
+    padding: 0;
+}
+
+.no-results {
+    text-align: center;
+    color: #999;
+    margin-top: 40px;
+}
+
+/* ---------- Popover card ---------- */
+.pop {
+    padding: 0;
+    border: none ;
+    border-radius: 14px;
+    background: #1b1b1b;
+    color: #fff;
+    width: 90%;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 191, 255, 0.45);
+    font-family: "Oswald", sans-serif;
+}
+
+.pop::backdrop {
+    background: none;
+}
+
+/* Bootstrap also has a .card, so everything it sets is reset here */
+.pop .card {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: min(640px, 90vh);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+}
+
+.pop .image {
+    width: 70%;
+    background: #0c0c0c;
+}
+
+.pop .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* The right side is a column: title and description on top, the comments
+   in the middle (they scroll), the review form at the bottom (it stays). */
+.pop .info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.pop .about {
+    flex: 1;
+    min-height: 0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* the close button sits in the top right corner of the screen, outside the card */
+.pop .close-btn {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: none;
+    color: #fff;
+    font-size: 18px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.pop .close-btn:hover {
+    color: #262626;
+}
+
+.pop .message {
+    margin: 0px 56px 0px 0px;
+}
+
+.pop .success-msg {
+    padding: 1px;
+    border: 1px solid #6aff5f;
+    border-radius: 20px;
+    background: rgba(50, 255, 115, 0.1);
+    color: #9bff9d;
+    text-align: center;
+}
+
+.pop .error-msg {
+    padding: 1px;
+    border: 1px solid #ff5f5f;
+    border-radius: 20px;
+    background: rgba(255, 50, 50, 0.1);
+    color: #ff9b9b;
+    text-align: center;
+}
+
+.pop .title {
+    flex: none;
+    padding-right: 56px;
+}
+
+.pop .section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pop h2 {
+    margin: 0px;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+/* the bookmark takes the place where the close button used to be */
+.pop .wishlist-form {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    margin: 0px;
+}
+
+.pop .wishlist {
+    width: 44px;
+    height: 44px;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    background:none;
+}
+
+.pop .wishlist.on {
+    color: #f5b301;
+}
+
+
+.pop .genre {
+    margin: 4px 0px 0px 0px;
+    color: #bdefff;
+    font-size: 15px;
+}
+
+.pop .meta {
+    margin: 2px 0px 0px 0px;
+    color: #8fa3b3;
+    font-size: 15px;
+}
+
+.pop .meta .bi-star-fill {
+    color: #ffc107;
+}
+
+.pop .description {
+    flex: none;
+}
+
+.pop .desc {
+    margin: 0px;
+    max-height: 120px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    color: #bbb;
+    font-family: system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.pop .interaction {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 14px;
+}
+
+.pop .rating-form h4 {
+    margin: 0px 0px 2px 0px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #ccc;
+}
+
+/* average rating: the stars are filled up to the average (4.3 fills 86%) */
+.pop .average {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pop .avg-stars {
+    font-size: 26px;
+    line-height: 1.1;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #f5b301 var(--fill), #666 var(--fill));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.pop .avg-text {
+    color: #ccc;
+    font-size: 15px;
+}
+
+.pop .click {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 22px;
+    border-radius: 50px;
+    background: #00bfff;
+    color: #000;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.pop .click:hover {
+    background: #bdefff;
+    color: #000;
+}
+
+.pop .click i {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* the row is reversed so ticking one star lights every star to its left */
+.pop .rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    margin: 0px;
+    padding: 0px;
+    border: 0;
+    min-width: 0;
+}
+
+.pop .rating input[type="radio"] {
+    display: none;
+}
+
+.pop .rating label {
+    margin: 0px;
+    font-size: 26px;
+    line-height: 1.1;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.pop .rating input[type="radio"]:checked ~ label,
+.pop .rating label:hover,
+.pop .rating label:hover ~ label {
+    color: #f5b301;
+}
+
+/* comments: this is the part that scrolls */
+.pop .comment {
+    flex: 1;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    padding: 14px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    scrollbar-width: thin;
+}
+
+.pop .comment-item .who {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+}
+
+.pop .comment-item strong {
+    font-weight: 500;
+}
+
+.pop .comment-item small {
+    color: #8fa3b3;
+    font-weight: normal;
+}
+
+.pop .stars-ro {
+    color: #f5b301;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.pop .comment-item p {
+    margin: 2px 0px 0px 0px;
+    color: #ccc;
+    font-family: system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.pop .del {
+    margin: 0px 0px 0px auto;
+}
+
+.pop .del button {
+    border: 0;
+    background: none;
+    color: #ff7a7a;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.pop .del button:hover {
+    color: #ff4d4d;
+}
+
+.pop .no-comments {
+    margin: 0px;
+    color: #8fa3b3;
+    font-size: 15px;
+}
+
+/* write a review: this part stays at the bottom */
+.pop .review {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pop .add-comment {
+    display: flex;
+    gap: 8px;
+}
+
+.pop .add-comment input {
+    flex: 1;
+    min-width: 0;
+    padding: 9px 16px;
+    border: 1px solid #333;
+    border-radius: 50px;
+    background: #111;
+    color: #fff;
+    font-family: system-ui, sans-serif;
+    font-size: 15px;
+}
+
+.pop .add-comment input:focus {
+    outline: none;
+    border-color: #00bfff;
+}
+
+.pop .btn-submit {
+    padding: 9px 22px;
+    border: 0;
+    border-radius: 50px;
+    background: #00bfff;
+    color: #000;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.pop .btn-submit:hover {
+    background: #bdefff;
+}
+
+.pop button:focus-visible,
+.pop .click:focus-visible,
+.pop .rating input:focus-visible + label {
+    outline: 2px solid #bdefff;
+    outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+    .store-grid {
+        gap: 14px;
+    }
+    .game-tile {
+        width: calc((100% - 28px) / 3);
+    }
+    .banner {
+        height: 200px;
+    }
+    .right_nav .search {
+        width: 150px;
+    }
+    .right_nav input {
+        width: 90px;
+    }
+    .link {
+        gap: 15px;
+    }
+    .pop .card {
+        flex-direction: column;
+        height: auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    .pop .image {
+        width: 100%;
+        height: 170px;
+    }
+    .pop .info {
+        overflow: visible;
+    }
+    .pop .comment {
+        flex: none;
+        max-height: 220px;
+    }
 }

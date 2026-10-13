@@ -58,6 +58,7 @@ $totals = $pdo->query(
                         ><i class="bi bi-sliders2"></i>Dashboard</a
                     >
                 </div>
+                
                 <div class="create interaction">
                     <a href="./Admin_Create.php"
                         ><i class="bi bi-plus-lg"></i>Create</a

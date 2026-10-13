@@ -133,3 +133,26 @@ function saveUpload(string $field, ?string $old): ?string
     }
     return $name;
 }
+
+// Users can delete their own review, admins can delete any review
+// Returns ['error' => '...'] when something is wrong, otherwise ['ok' => true]
+function deleteReview($pdo, $reviewId, $userId, $isAdmin)
+{
+    $stmt = $pdo->prepare('SELECT user_id FROM reviews WHERE id = ?');
+    $stmt->execute([$reviewId]);
+    $review = $stmt->fetch();
+
+    if (!$review) {
+        return ['error' => 'That review no longer exists.'];
+    }
+    if ($review['user_id'] != $userId && !$isAdmin) {
+        return ['error' => 'You can only delete your own reviews.'];
+    }
+
+    $stmt = $pdo->prepare('DELETE FROM reviews WHERE id = ?');
+    $stmt->execute([$reviewId]);
+
+    return ['ok' => true];
+}
+    ?>
+
