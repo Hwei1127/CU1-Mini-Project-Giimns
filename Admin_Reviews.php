@@ -10,9 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!csrfOk()) {
         $error = 'Your session expired. Please try again.';
     } else {
-        $stmt = $pdo->prepare('DELETE FROM reviews WHERE id = ?');
-        $stmt->execute([(int) ($_POST['review_id'] ?? 0)]);
-        if ($stmt->rowCount()) {
+        $query = $pdo->prepare('DELETE FROM reviews WHERE id = ?');
+        $query->execute([(int) ($_POST['review_id'] ?? 0)]);
+        if ($query->rowCount()) {
             header('Location: Admin_Reviews.php?deleted=1');
             exit;
         }
@@ -139,15 +139,15 @@ $reviews = $pdo->query(
                         <th>Date</th>
                         <th></th>
                     </tr>
-                    <?php foreach ($reviews as $r): ?>
+                    <?php foreach ($reviews as $review): ?>
                     <tr>
-                        <td><?= htmlspecialchars($r['game_name']) ?></td>
-                        <td><?= htmlspecialchars($r['user_name']) ?></td>
+                        <td><?= htmlspecialchars($review['game_name']) ?></td>
+                        <td><?= htmlspecialchars($review['user_name']) ?></td>
                         <td class="stars">
-                            <?= str_repeat('★', (int) $r['rating']) . str_repeat('☆', 5 - (int) $r['rating']) ?>
+                            <?= str_repeat('★', (int) $review['rating']) . str_repeat('☆', 5 - (int) $review['rating']) ?>
                         </td>
-                        <td><?= htmlspecialchars($r['comment'] ?? '') ?></td>
-                        <td><?= htmlspecialchars(date('j M Y', strtotime($r['created_at']))) ?></td>
+                        <td><?= htmlspecialchars($review['comment'] ?? '') ?></td>
+                        <td><?= htmlspecialchars(date('j M Y', strtotime($review['created_at']))) ?></td>
                         <td>
                             <form
                                 method="post"
@@ -155,7 +155,7 @@ $reviews = $pdo->query(
                                 onsubmit="return confirm('Delete this review?');"
                             >
                                 <?= csrfField() ?>
-                                <input type="hidden" name="review_id" value="<?= (int) $r['id'] ?>" />
+                                <input type="hidden" name="review_id" value="<?= (int) $review['id'] ?>" />
                                 <button type="submit" class="btn delete">
                                     <i class="bi bi-trash"></i>
                                 </button>

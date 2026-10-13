@@ -4,7 +4,7 @@ requireRole(['admin']);
 require_once __DIR__ . '/Configure/database.php';
 
 $roles = ['user', 'editor', 'admin'];
-$myId  = (int) $_SESSION['user']['id'];
+$currentUserId  = (int) $_SESSION['user']['id'];
 
 $success = '';
 if (isset($_GET['updated'])) {
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!csrfOk()) {
         $error = 'Your session expired. Please try again.';
-    } elseif ($targetId === $myId) {
+    } elseif ($targetId === $currentUserId) {
         $error = 'You cannot change or delete your own account here.';
     } elseif (($_POST['do'] ?? '') === 'role') {
         $role = $_POST['role'] ?? '';
@@ -31,9 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Invalid role.';
     } elseif (($_POST['do'] ?? '') === 'delete') {
         // Their wishlist entries and reviews are deleted with them
-        $stmt = $pdo->prepare('DELETE FROM users WHERE id = ?');
-        $stmt->execute([$targetId]);
-        if ($stmt->rowCount()) {
+        $query = $pdo->prepare('DELETE FROM users WHERE id = ?');
+        $query->execute([$targetId]);
+        if ($query->rowCount()) {
             header('Location: Admin_Users.php?deleted=1');
             exit;
         }
@@ -147,25 +147,25 @@ $users = $pdo->query('SELECT id, name, email, role, created_at FROM users ORDER 
                         <th>Joined</th>
                         <th></th>
                     </tr>
-                    <?php foreach ($users as $u): ?>
-                    <?php $isMe = ((int) $u['id'] === $myId); ?>
+                    <?php foreach ($users as $user): ?>
+                    <?php $isCurrentUser = ((int) $user['id'] === $currentUserId); ?>
                     <tr>
                         <td>
-                            <?= htmlspecialchars($u['name']) ?>
-                            <?php if ($isMe): ?><small>(you)</small><?php endif; ?>
+                            <?= htmlspecialchars($user['name']) ?>
+                            <?php if ($isCurrentUser): ?><small>(you)</small><?php endif; ?>
                         </td>
-                        <td><?= htmlspecialchars($u['email']) ?></td>
+                        <td><?= htmlspecialchars($user['email']) ?></td>
                         <td>
-                            <?php if ($isMe): ?>
-                            <span class="role <?= htmlspecialchars($u['role']) ?>"><?= htmlspecialchars($u['role']) ?></span>
+                            <?php if ($isCurrentUser): ?>
+                            <span class="role <?= htmlspecialchars($user['role']) ?>"><?= htmlspecialchars($user['role']) ?></span>
                             <?php else: ?>
                             <form class="change" method="post" action="Admin_Users.php">
                                 <?= csrfField() ?>
                                 <input type="hidden" name="do" value="role" />
-                                <input type="hidden" name="id" value="<?= (int) $u['id'] ?>" />
+                                <input type="hidden" name="id" value="<?= (int) $user['id'] ?>" />
                                 <select name="role">
                                     <?php foreach ($roles as $role): ?>
-                                    <option value="<?= htmlspecialchars($role) ?>" <?= $u['role'] === $role ? 'selected' : '' ?>>
+                                    <option value="<?= htmlspecialchars($role) ?>" <?= $user['role'] === $role ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($role) ?>
                                     </option>
                                     <?php endforeach; ?>
@@ -174,9 +174,9 @@ $users = $pdo->query('SELECT id, name, email, role, created_at FROM users ORDER 
                             </form>
                             <?php endif; ?>
                         </td>
-                        <td><?= htmlspecialchars(date('j M Y', strtotime($u['created_at']))) ?></td>
+                        <td><?= htmlspecialchars(date('j M Y', strtotime($user['created_at']))) ?></td>
                         <td>
-                            <?php if (!$isMe): ?>
+                            <?php if (!$isCurrentUser): ?>
                             <form
                                 method="post"
                                 action="Admin_Users.php"
@@ -184,7 +184,7 @@ $users = $pdo->query('SELECT id, name, email, role, created_at FROM users ORDER 
                             >
                                 <?= csrfField() ?>
                                 <input type="hidden" name="do" value="delete" />
-                                <input type="hidden" name="id" value="<?= (int) $u['id'] ?>" />
+                                <input type="hidden" name="id" value="<?= (int) $user['id'] ?>" />
                                 <button type="submit" class="btn delete">
                                     <i class="bi bi-trash"></i>
                                 </button>

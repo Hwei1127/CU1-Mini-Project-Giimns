@@ -11,16 +11,16 @@ $game     = ['name' => '', 'description' => '', 'price' => '0.00', 'link' => '',
 $selected = [];
 
 if ($editId) {
-    $stmt = $pdo->prepare('SELECT * FROM games WHERE id = ?');
-    $stmt->execute([$editId]);
-    $game = $stmt->fetch();
+    $query = $pdo->prepare('SELECT * FROM games WHERE id = ?');
+    $query->execute([$editId]);
+    $game = $query->fetch();
     if (!$game) {
         header('Location: Admin_Games.php');
         exit;
     }
-    $stmt = $pdo->prepare('SELECT genre_id FROM game_genres WHERE game_id = ?');
-    $stmt->execute([$editId]);
-    $selected = array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
+    $query = $pdo->prepare('SELECT genre_id FROM game_genres WHERE game_id = ?');
+    $query->execute([$editId]);
+    $selected = array_map('intval', $query->fetchAll(PDO::FETCH_COLUMN));
 }
 
 $success = isset($_GET['saved']) ? 'Game successfully created' : '';
@@ -49,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $game['image']  = saveUpload('image', $game['image']);
             $game['banner'] = saveUpload('banner', $game['banner']);
-        } catch (RuntimeException $ex) {
-            $error = $ex->getMessage();
+        } catch (RuntimeException $exception) {
+            $error = $exception->getMessage();
         }
     }
 
@@ -212,13 +212,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="cols">
                     <?php foreach (['image' => 'Cover image', 'banner' => 'Banner image'] as $field => $label): ?>
-                    <?php $url = gameImageUrl($game[$field]); ?>
+                    <?php $imageUrl = gameImageUrl($game[$field]); ?>
                     <div>
                         <span class="field-label"><?= $label ?></span>
                         <label class="drop-area" for="<?= $field ?>">
                             <input type="file" accept="image/*" id="<?= $field ?>" name="<?= $field ?>" hidden />
-                            <div class="img-view <?= $url ? 'has-image' : '' ?>" <?= $url ? 'style="background-image:url(\'' . htmlspecialchars($url) . '\')"' : '' ?>>
-                                <?= $url ? '' : 'Click or drag and drop an image here' ?>
+                            <div class="img-view <?= $imageUrl ? 'has-image' : '' ?>" <?= $imageUrl ? 'style="background-image:url(\'' . htmlspecialchars($imageUrl) . '\')"' : '' ?>>
+                                <?= $imageUrl ? '' : 'Click or drag and drop an image here' ?>
                             </div>
                         </label>
                     </div>

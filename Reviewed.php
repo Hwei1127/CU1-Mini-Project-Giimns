@@ -22,27 +22,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $comment  = trim($_POST['comment'] ?? '');
 
         // Only the signed-in user's own review can be changed
-        $stmt = $pdo->prepare('SELECT id FROM reviews WHERE id = ? AND user_id = ?');
-        $stmt->execute([$reviewId, $userId]);
+        $query = $pdo->prepare('SELECT id FROM reviews WHERE id = ? AND user_id = ?');
+        $query->execute([$reviewId, $userId]);
 
-        if (!$stmt->fetch()) {
+        if (!$query->fetch()) {
             $error = 'That review no longer exists.';
         } elseif ($rating < 1 || $rating > 5) {
             $error = 'Please choose a rating from 1 to 5 stars.';
         } elseif (strlen($comment) > 1000) {
             $error = 'Comments can be at most 1000 characters.';
         } else {
-            $stmt = $pdo->prepare('UPDATE reviews SET rating = ?, comment = ? WHERE id = ? AND user_id = ?');
-            $stmt->execute([$rating, $comment, $reviewId, $userId]);
+            $query = $pdo->prepare('UPDATE reviews SET rating = ?, comment = ? WHERE id = ? AND user_id = ?');
+            $query->execute([$rating, $comment, $reviewId, $userId]);
             header('Location: Reviewed.php?updated=1');
             exit;
         }
     } elseif (($_POST['do'] ?? '') === 'delete') {
         // Users can only delete their own reviews
-        $stmt = $pdo->prepare('DELETE FROM reviews WHERE id = ? AND user_id = ?');
-        $stmt->execute([(int) ($_POST['review_id'] ?? 0), $userId]);
+        $query = $pdo->prepare('DELETE FROM reviews WHERE id = ? AND user_id = ?');
+        $query->execute([(int) ($_POST['review_id'] ?? 0), $userId]);
 
-        if ($stmt->rowCount()) {
+        if ($query->rowCount()) {
             header('Location: Reviewed.php?deleted=1');
             exit;
         }
@@ -50,15 +50,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$stmt = $pdo->prepare(
+$query = $pdo->prepare(
     'SELECT r.id, r.rating, r.comment, r.created_at, g.name
        FROM reviews r
        JOIN games g ON g.id = r.game_id
       WHERE r.user_id = ?
       ORDER BY r.created_at DESC'
 );
-$stmt->execute([$userId]);
-$reviews = $stmt->fetchAll();
+$query->execute([$userId]);
+$reviews = $query->fetchAll();
 ?>
 
 <!doctype html>
@@ -158,37 +158,37 @@ $reviews = $stmt->fetchAll();
             <?php endif; ?>
 
             <div class="settings">
-                <?php foreach ($reviews as $r): ?>
+                <?php foreach ($reviews as $review): ?>
                 <div class="review panel">
                     <h3>
-                        <?= htmlspecialchars($r['name']) ?>
-                        <small><?= htmlspecialchars(date('j M Y', strtotime($r['created_at']))) ?></small>
+                        <?= htmlspecialchars($review['name']) ?>
+                        <small><?= htmlspecialchars(date('j M Y', strtotime($review['created_at']))) ?></small>
                     </h3>
 
                     <form method="post" action="Reviewed.php">
                         <?= csrfField() ?>
                         <input type="hidden" name="do" value="update" />
-                        <input type="hidden" name="review_id" value="<?= (int) $r['id'] ?>" />
+                        <input type="hidden" name="review_id" value="<?= (int) $review['id'] ?>" />
 
                         <label>Rating</label>
                         <fieldset class="rating">
-                            <?php for ($i = 5; $i >= 1; $i--): ?>
+                            <?php for ($star = 5; $star >= 1; $star--): ?>
                             <input
                                 type="radio"
-                                id="star<?= $i ?>-<?= (int) $r['id'] ?>"
+                                id="star<?= $star ?>-<?= (int) $review['id'] ?>"
                                 name="rating"
-                                value="<?= $i ?>"
-                                <?= (int) $r['rating'] === $i ? 'checked' : '' ?>
+                                value="<?= $star ?>"
+                                <?= (int) $review['rating'] === $star ? 'checked' : '' ?>
                             /><label
-                                for="star<?= $i ?>-<?= (int) $r['id'] ?>"
-                                title="<?= $i ?> star<?= $i > 1 ? 's' : '' ?>"
+                                for="star<?= $star ?>-<?= (int) $review['id'] ?>"
+                                title="<?= $star ?> star<?= $star > 1 ? 's' : '' ?>"
                                 >&#9733;</label
                             >
                             <?php endfor; ?>
                         </fieldset>
 
                         <label>Comment</label>
-                        <textarea class="form-control" name="comment" rows="3" maxlength="1000" placeholder="Comment (optional)"><?= htmlspecialchars($r['comment'] ?? '') ?></textarea>
+                        <textarea class="form-control" name="comment" rows="3" maxlength="1000" placeholder="Comment (optional)"><?= htmlspecialchars($review['comment'] ?? '') ?></textarea>
                          <div class="button">
                         <button type="submit" class="btn submit">Update</button>
                     </form>                              
@@ -199,7 +199,7 @@ $reviews = $stmt->fetchAll();
                     >
                         <?= csrfField() ?>
                         <input type="hidden" name="do" value="delete" />
-                        <input type="hidden" name="review_id" value="<?= (int) $r['id'] ?>" />
+                        <input type="hidden" name="review_id" value="<?= (int) $review['id'] ?>" />
                         <button type="submit" class="btn delete">Delete</button>
                     </form>
                     </div>

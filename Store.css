@@ -117,7 +117,7 @@ body{
         0 0 30px #006eff;
 }
 
-/* ---------- Banner ---------- */
+
 .banner {
     background-image: url(./Assets/Images/banner_long.png);
     background-size: cover;
@@ -125,7 +125,7 @@ body{
     height: 350px;
 }
 
-/* ---------- Store ---------- */
+
 .store-wrap {
     max-width: 1200px;
     margin: 0 auto;
@@ -164,7 +164,7 @@ body{
     outline-offset: 2px;
 }
 
-/* ---------- Image grid (the store itself) ---------- */
+
 .store-grid {
     list-style: none;
     margin: 0;
@@ -175,7 +175,7 @@ body{
     gap: 20px;
 }
 
-/* 6 cards in every row: (full width - 5 gaps) / 6 */
+
 .game-tile {
     width: calc((100% - 100px) / 6);
 }
@@ -191,7 +191,12 @@ body{
     cursor: pointer;
 }
 
-.open-btn:hover,
+.open-btn:hover{
+    border-color: #00bfff;
+    box-shadow: 0 0 14px rgba(0, 191, 255, 0.45);
+    outline: none;
+}
+
 .open-btn:focus-visible {
     border-color: #00bfff;
     box-shadow: 0 0 14px rgba(0, 191, 255, 0.45);
@@ -225,7 +230,6 @@ body{
     margin-top: 40px;
 }
 
-/* ---------- Popover card ---------- */
 .pop {
     padding: 0;
     border: none ;
@@ -243,7 +247,6 @@ body{
     background: none;
 }
 
-/* Bootstrap also has a .card, so everything it sets is reset here */
 .pop .card {
     position: relative;
     display: flex;
@@ -267,8 +270,6 @@ body{
     display: block;
 }
 
-/* The right side is a column: title and description on top, the comments
-   in the middle (they scroll), the review form at the bottom (it stays). */
 .pop .info {
     flex: 1;
     min-width: 0;
@@ -287,7 +288,6 @@ body{
     gap: 16px;
 }
 
-/* the close button sits in the top right corner of the screen, outside the card */
 .pop .close-btn {
     position: fixed;
     top: 20px;
@@ -346,7 +346,6 @@ body{
     font-weight: 500;
 }
 
-/* the bookmark takes the place where the close button used to be */
 .pop .wishlist-form {
     position: absolute;
     top: 14px;
@@ -461,7 +460,6 @@ body{
     padding: 0px;
 }
 
-/* the row is reversed so ticking one star lights every star to its left */
 .pop .rating {
     display: flex;
     flex-direction: row-reverse;
@@ -485,13 +483,18 @@ body{
     transition: color 0.2s ease;
 }
 
-.pop .rating input[type="radio"]:checked ~ label,
-.pop .rating label:hover,
+.pop .rating input[type="radio"]:checked ~ label{
+    color: #f5b301;
+}
+
+.pop .rating label:hover{
+    color: #f5b301;
+}
+
 .pop .rating label:hover ~ label {
     color: #f5b301;
 }
 
-/* comments: this is the part that scrolls */
 .pop .comment {
     flex: 1;
     min-height: 120px;
@@ -558,7 +561,6 @@ body{
     font-size: 15px;
 }
 
-/* write a review: this part stays at the bottom */
 .pop .review {
     flex: none;
     display: flex;

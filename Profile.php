@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($name === '') {
             $error = 'Username cannot be empty.';
         } else {
-            $stmt = $pdo->prepare('UPDATE users SET name = ? WHERE id = ?');
-            $stmt->execute([$name, $userId]);
+            $query = $pdo->prepare('UPDATE users SET name = ? WHERE id = ?');
+            $query->execute([$name, $userId]);
 
             $_SESSION['user']['name'] = $name;
             $success = 'Username updated.';
@@ -25,9 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } elseif (($_POST['do'] ?? '') === 'password') {
 
-        $stmt = $pdo->prepare('SELECT password FROM users WHERE id = ?');
-        $stmt->execute([$userId]);
-        $user = $stmt->fetch();
+        $query = $pdo->prepare('SELECT password FROM users WHERE id = ?');
+        $query->execute([$userId]);
+        $user = $query->fetch();
 
         if (!password_verify($_POST['current_password'] ?? '', $user['password'])) {
             $error = 'Current password is incorrect.';
@@ -36,27 +36,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($_POST['new_password'] !== $_POST['confirm_password']) {
             $error = 'New passwords do not match.';
         } else {
-            $stmt = $pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
-            $stmt->execute([password_hash($_POST['new_password'], PASSWORD_DEFAULT), $userId]);
+            $query = $pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
+            $query->execute([password_hash($_POST['new_password'], PASSWORD_DEFAULT), $userId]);
 
             $success = 'Password updated.';
         }
     }
 }
 
-$stmt = $pdo->prepare('SELECT created_at FROM users WHERE id = ?');
-$stmt->execute([$userId]);
-$createdAt = $stmt->fetchColumn();
+$query = $pdo->prepare('SELECT created_at FROM users WHERE id = ?');
+$query->execute([$userId]);
+$createdAt = $query->fetchColumn();
 
 $stats = ['wishes' => 0, 'reviews' => 0];
 
-$stmt = $pdo->prepare('SELECT COUNT(DISTINCT game_id) FROM wishlist WHERE user_id = ?');
-$stmt->execute([$userId]);
-$stats['wishes'] = (int) $stmt->fetchColumn();
+$query = $pdo->prepare('SELECT COUNT(DISTINCT game_id) FROM wishlist WHERE user_id = ?');
+$query->execute([$userId]);
+$stats['wishes'] = (int) $query->fetchColumn();
 
-$stmt = $pdo->prepare('SELECT COUNT(*) FROM reviews WHERE user_id = ?');
-$stmt->execute([$userId]);
-$stats['reviews'] = (int) $stmt->fetchColumn();
+$query = $pdo->prepare('SELECT COUNT(*) FROM reviews WHERE user_id = ?');
+$query->execute([$userId]);
+$stats['reviews'] = (int) $query->fetchColumn();
 
 ?>
 <!doctype html>

@@ -13,9 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!isAdmin()) {
         $error = 'Only admins can delete games.';
     } else {
-        $stmt = $pdo->prepare('DELETE FROM games WHERE id = ?');
-        $stmt->execute([(int) ($_POST['id'] ?? 0)]);
-        if ($stmt->rowCount()) {
+        $query = $pdo->prepare('DELETE FROM games WHERE id = ?');
+        $query->execute([(int) ($_POST['id'] ?? 0)]);
+        if ($query->rowCount()) {
             header('Location: Admin_Games.php?deleted=1');
             exit;
         }
@@ -151,25 +151,25 @@ $games = $pdo->query(
                         <th>Rating</th>
                         <th></th>
                     </tr>
-                    <?php foreach ($games as $g): ?>
-                    <?php $img = gameImageUrl($g['image'] ?? ''); ?>
+                    <?php foreach ($games as $game): ?>
+                    <?php $imageUrl = gameImageUrl($game['image'] ?? ''); ?>
                     <tr>
                         <td>
-                            <?php if ($img): ?>
-                            <img class="thumb" src="<?= htmlspecialchars($img) ?>" alt="" />
+                            <?php if ($imageUrl): ?>
+                            <img class="thumb" src="<?= htmlspecialchars($imageUrl) ?>" alt="" />
                             <?php else: ?>
                             <div class="thumb empty"><i class="bi bi-controller"></i></div>
                             <?php endif; ?>
                         </td>
-                        <td><?= htmlspecialchars($g['name']) ?></td>
-                        <td><?= htmlspecialchars($g['genres'] ?? '') ?></td>
-                        <td><?= (float) $g['price'] > 0 ? '$' . number_format((float) $g['price'], 2) : 'Free' ?></td>
+                        <td><?= htmlspecialchars($game['name']) ?></td>
+                        <td><?= htmlspecialchars($game['genres'] ?? '') ?></td>
+                        <td><?= (float) $game['price'] > 0 ? '$' . number_format((float) $game['price'], 2) : 'Free' ?></td>
                         <td class="rating">
-                            <?= (int) $g['review_count'] ? htmlspecialchars($g['avg_rating']) . ' (' . (int) $g['review_count'] . ')' : '&ndash;' ?>
+                            <?= (int) $game['review_count'] ? htmlspecialchars($game['avg_rating']) . ' (' . (int) $game['review_count'] . ')' : '&ndash;' ?>
                         </td>
                         <td>
                             <div class="actions">
-                                <a class="btn edit" href="./Admin_Create.php?id=<?= (int) $g['id'] ?>"
+                                <a class="btn edit" href="./Admin_Create.php?id=<?= (int) $game['id'] ?>"
                                     ><i class="bi bi-pencil"></i>Edit</a
                                 >
                                 <?php if (isAdmin()): ?>
@@ -179,7 +179,7 @@ $games = $pdo->query(
                                     onsubmit="return confirm('Delete this game? Its reviews and wishlist entries are deleted too.');"
                                 >
                                     <?= csrfField() ?>
-                                    <input type="hidden" name="id" value="<?= (int) $g['id'] ?>" />
+                                    <input type="hidden" name="id" value="<?= (int) $game['id'] ?>" />
                                     <button type="submit" class="btn delete">
                                         <i class="bi bi-trash"></i>
                                     </button>

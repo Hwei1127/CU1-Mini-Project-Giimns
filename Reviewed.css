@@ -86,7 +86,6 @@ i {
 
 .message {
     margin: 10px 0px 10px 0px;
-
 }
 
 .success-msg {
@@ -156,7 +155,7 @@ i {
     margin: 12px 0 4px;
 }
 
-.button{
+.button {
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -164,7 +163,7 @@ i {
     padding-top: 10px;
 }
 
-.submit{
+.submit {
     background-color: #00bfff;
 }
 
@@ -181,8 +180,6 @@ i {
     background-color: rgb(55, 0, 0);
 }
 
-
-/* the row is reversed so ticking one star lights every star to its left */
 .rating {
     display: flex;
     flex-direction: row-reverse;
@@ -204,15 +201,28 @@ i {
     transition: color 0.2s ease;
 }
 
-.rating input[type="radio"]:checked ~ label,
-.settings .rating label:hover,
+.rating input[type="radio"]:checked ~ label {
+    color: #f5b301;
+}
+.settings .rating label:hover {
+    color: #f5b301;
+}
 .settings .rating label:hover ~ label {
     color: #f5b301;
 }
 
-.rating input[type="radio"]:checked + label:hover,
-.rating input[type="radio"]:checked ~ label:hover,
-.settings .rating label:hover ~ input[type="radio"]:checked ~ label,
+.rating input[type="radio"]:checked + label:hover {
+    color: #ffcc00;
+}
+
+.rating input[type="radio"]:checked ~ label:hover {
+    color: #ffcc00;
+}
+
+.settings .rating label:hover ~ input[type="radio"]:checked ~ label {
+    color: #ffcc00;
+}
+
 .rating input[type="radio"]:checked ~ label:hover ~ label {
     color: #ffcc00;
 }
@@ -222,4 +232,3 @@ i {
     flex-direction: row;
     color: white;
 }
-
