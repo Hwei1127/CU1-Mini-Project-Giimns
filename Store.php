@@ -70,26 +70,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // All games + their genres + average rating + whether this user wishlisted it
 $query = $pdo->prepare("
-    SELECT g.id, g.name, g.image, g.banner, g.link, g.description, g.price,
-           GROUP_CONCAT(DISTINCT ge.genre ORDER BY ge.genre SEPARATOR ',') AS genres,
-           (SELECT ROUND(AVG(r.rating), 1) FROM reviews r WHERE r.game_id = g.id) AS avg_rating,
-           (SELECT COUNT(*) FROM wishlist w WHERE w.game_id = g.id AND w.user_id = :uid) AS wished
-    FROM games g
-    LEFT JOIN game_genres gg ON gg.game_id = g.id
-    LEFT JOIN genres ge ON ge.id = gg.genre_id
-    GROUP BY g.id
-    ORDER BY g.created_at DESC, g.id DESC
+    SELECT games.id, games.name, games.image, games.banner, games.link, games.description, games.price,
+           GROUP_CONCAT(DISTINCT genres.genre ORDER BY genres.genre SEPARATOR ',') AS genres,
+           (SELECT ROUND(AVG(reviews.rating), 1) FROM reviews WHERE reviews.game_id = games.id) AS average_rating,
+           (SELECT COUNT(*) FROM wishlist WHERE wishlist.game_id = games.id AND wishlist.user_id = :userId) AS wished
+    FROM games
+    LEFT JOIN game_genres ON game_genres.game_id = games.id
+    LEFT JOIN genres ON genres.id = game_genres.genre_id
+    GROUP BY games.id
+    ORDER BY games.created_at DESC, games.id DESC
 ");
-$query->execute(['uid' => $userId]);
+$query->execute(['userId' => $userId]);
 $games = $query->fetchAll();
 
 // Every review, grouped by game
 $reviewsByGame = [];
 $reviewRows = $pdo->query(
-    'SELECT r.id, r.game_id, r.user_id, r.rating, r.comment, r.created_at, u.name AS user_name
-       FROM reviews r
-       JOIN users u ON u.id = r.user_id
-      ORDER BY r.created_at DESC, r.id DESC'
+    'SELECT reviews.id, reviews.game_id, reviews.user_id, reviews.rating, reviews.comment, reviews.created_at, users.name AS user_name
+       FROM reviews
+       JOIN users ON users.id = reviews.user_id
+      ORDER BY reviews.created_at DESC, reviews.id DESC'
 )->fetchAll();
 foreach ($reviewRows as $reviewRow) {
     $reviewsByGame[$reviewRow['game_id']][] = $reviewRow;
@@ -148,7 +148,7 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
             <div class="right_nav">
                <div class="search">
                     <i class="bi bi-search"></i>
-                    <input type="search" placeholder="Search" id="myInput" onkeyup="myFunction()"/>
+                    <input type="search" placeholder="Search" id="searchInput" oninput="applyFilters()"/>
                 </div>
                 <div class="profile">
                 <a  href="./Profile.php"><i class="bi bi-person-fill"></i></a>
@@ -165,6 +165,7 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
         <div class="banner"></div>
 
         <main class="store-wrap">
+            <h2 class="section-title">Explore by Genre</h2>
             <div class="genre-filter" id="genreFilter">
                 <button class="chip active" data-genre="">All</button>
                 <?php foreach ($allGenres as $genre): ?>
@@ -173,8 +174,10 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
                 </button>
                 <?php endforeach; ?>
             </div>
+
             <h2 class="section-title">All Games <small>(<span id="gameCount"><?= count($games) ?></span>)</small></h2>
-            <ul id="myUL" class="store-grid">
+
+            <ul id="gameGrid" class="store-grid">
                 <?php foreach ($games as $game): ?>
                 <?php
                 $gameId         = (int) $game['id'];
@@ -184,7 +187,7 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
                 $gameReviews = $reviewsByGame[$game['id']] ?? [];
                 $isWishlisted      = (int) $game['wished'] > 0;
                 $reviewCount = count($gameReviews);
-                $averagePercent  = $game['avg_rating'] !== null ? (float) $game['avg_rating'] / 5 * 100 : 0;
+                $averagePercent  = $game['average_rating'] !== null ? (float) $game['average_rating'] / 5 * 100 : 0;
 
                 // This user's own review of the game (if there is one)
                 $userReview = null;
@@ -277,7 +280,7 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
                                                     <span class="avg-stars" style="--fill: <?= $averagePercent ?>%">★★★★★</span>
                                                     <span class="avg-text">
                                                         <?php if ($reviewCount): ?>
-                                                        <?= htmlspecialchars($game['avg_rating']) ?> (<?= $reviewCount ?>)
+                                                        <?= htmlspecialchars($game['average_rating']) ?> (<?= $reviewCount ?>)
                                                         <?php else: ?>
                                                         No ratings yet
                                                         <?php endif; ?>
@@ -297,7 +300,7 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
                                         <p class="no-comments">No reviews yet. Be the first to review this game.</p>
                                         <?php endif; ?>
                                         <?php foreach ($gameReviews as $review): ?>
-                                        <?php $isMine = ((int) $review['user_id'] === $userId);?>
+                                        <?php $isMine = ((int) $review['user_id'] === $userId); ?>
                                         <div class="comment-item">
                                             <div class="who">
                                                 <strong>
@@ -327,7 +330,6 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
                                             <?php if (trim((string) $review['comment']) !== ''): ?>
                                             <p><?= nl2br(htmlspecialchars($review['comment'])) ?></p>
                                             <?php endif; ?>
-                                                                                                                                            <hr>
                                         </div>
                                         <?php endforeach; ?>
                                     </div>
