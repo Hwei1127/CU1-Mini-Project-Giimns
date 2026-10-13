@@ -28,9 +28,9 @@ function isUser()
     return in_array(currentRole(), ['user', 'editor', 'admin'], true);
 }
 
-/**
- * Guests go to Sign In; logged-in users with the wrong role get a 403 page.
- */
+
+// Guests go to Sign In; logged-in users with the wrong role get a 403 page.
+
 function requireRole(array $roles)
 {
     if (isGuest()) {
@@ -48,7 +48,7 @@ function escape($value): string
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
-/* ---------- CSRF + flash messages ---------- */
+// CSRF It's an attack where another website tricks a logged-in user's browser into sending a request to your site without the user knowing.
 
 function csrfToken(): string
 {
@@ -89,8 +89,7 @@ function redirectTo(string $page): void
     exit;
 }
 
-/* ---------- images ---------- */
-
+// Image
 function gameImageUrl(?string $file): string
 {
     $file = basename((string) $file);
@@ -105,7 +104,8 @@ function gameImageUrl(?string $file): string
     return '';
 }
 
-/** Saves an uploaded image into Assets/Images/games/ and returns its file name (or $oldFileName when nothing was uploaded). */
+// Saves an uploaded image into Assets/Images/games/ and returns its file name (or $oldFileName when nothing was uploaded).
+
 function saveUpload(string $field, ?string $oldFileName): ?string
 {
     if (empty($_FILES[$field]) || $_FILES[$field]['error'] === UPLOAD_ERR_NO_FILE) {

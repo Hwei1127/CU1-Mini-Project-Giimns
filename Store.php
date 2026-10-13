@@ -175,7 +175,6 @@ $allGenres = $pdo->query('SELECT genre FROM genres ORDER BY genre')->fetchAll(PD
                 <?php endforeach; ?>
             </div>
 
-            <h2 class="section-title">All Games <small>(<span id="gameCount"><?= count($games) ?></span>)</small></h2>
 
             <ul id="gameGrid" class="store-grid">
                 <?php foreach ($games as $game): ?>
