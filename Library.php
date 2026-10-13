@@ -240,7 +240,7 @@ foreach ($reviewRows as $reviewRow) {
                             <input type="hidden" name="do" value="remove" />
                             <input type="hidden" name="game_id" value="<?= (int) $game['id'] ?>" />
                             <button type="submit" class="remove">
-                                <i class="bi bi-bookmark-x"></i>Remove
+                                Remove
                             </button>
                         </form>
                     </li>
